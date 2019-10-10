@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<title>Chat</title>
+	<meta charset="utf-8">
+	<link rel="icon" type="image/png" href="https://img.pngio.com/image-sanss-face-high-resolution-renderpng-undertale-au-sans-png-undertale-1024_1024.png" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+	<header>
+		Ejemplo Chat
+		<a href="/logout">Cerrar Sesión</a>
+	</header>
+	<main>
+		<section>
+			<h2>Chat</h2>
+			
+			<div id="mensajes">
+			</div>
+
+			<div class="send">
+				<input id="txtMsg" class="text" type="text" placeholder="Escribe tu mensaje" name="mensaje" value="" onkeypress="teclaEnter(event)">
+				<input class="btn" type="button" value="Enviar" onclick="enviarMensaje()">
+			</div>
+		</section>
+
+		<p class="check">
+			<input type="checkbox" checked id="cbScroll"/>
+			<label for="cbScroll">AutoScroll</label>
+		</p>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+			<script>
+				const socket = io();
+				var cbScroll = document.getElementById('cbScroll');
+				var txtMsg = document.getElementById('txtMsg');
+				var divMensajes = document.getElementById('mensajes');
+				cbScroll.checked = true;
+
+				jsonStringConectado = '{"sender":"System", "hour":"12:00", "msg":"{{ user }} se ha conectado."}';
+				socket.emit('message', jsonStringConectado);
+
+				socket.on('message', function (jsonStringRec){
+
+					jsonRecibido = JSON.parse(jsonStringRec);
+
+					if(jsonRecibido.sender == "System"){
+						var p = document.createElement("p");
+						p.innerText = jsonRecibido.msg;
+						divMensajes.appendChild(p);
+					}else{
+						var currentDiv = document.createElement('div');
+						currentDiv.appendChild(document.createTextNode(jsonRecibido.sender +" dice: " + jsonRecibido.msg));
+						var p = document.createElement("p");
+						p.innerText = jsonRecibido.hour;
+
+						currentDiv.appendChild(p);
+						divMensajes.appendChild(currentDiv);
+					}
+
+					if(cbScroll.checked == true){
+						window.scrollTo(0, document.body.scrollHeight);
+						txtMsg.focus();
+					}
+				});
+
+				function enviarMensaje(){
+					var currentDate = new Date();
+					var txtMsg = document.getElementById('txtMsg');
+					var msg = txtMsg.value;
+
+					var tempS = msg.split(' ').join('');
+					if(tempS == ""){
+						alert("No puede enviar un mensaje vacío");
+						txtMsg.value = "";
+						return;
+						}
+					
+					if(tempS.includes("\"") || tempS.includes("'") || tempS.includes("{") || tempS.includes("}")){
+						alert("No puede incluir carácteres especiales en el mensaje como \" ' { }");
+						txtMsg.value = "";
+						return;
+					}
+
+					var fecha = currentDate.getDate()+"/"+(currentDate.getMonth()+1)+"/"+currentDate.getFullYear()+" ";
+					var hora = currentDate.getHours()+":"+currentDate.getMinutes();
+					jsonString = '{"sender":"{{ user }}", "hour":"'+fecha+hora+'", "msg":"'+msg+'"}';
+					socket.send(jsonString);
+					txtMsg.value = "";
+				}
+
+				function teclaEnter(e) {
+    				if (e.keyCode == 13) {
+						enviarMensaje();
+    				}
+				}
+			</script>
+	</main>
+</body>
+</html>

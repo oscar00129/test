@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<title>Chat</title>
+	<meta charset="utf-8">
+	<link rel="icon" type="image/png" href="https://img.pngio.com/image-sanss-face-high-resolution-renderpng-undertale-au-sans-png-undertale-1024_1024.png" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+	<header>Ejemplo Chat</header>
+	<main>
+		<section>
+			<h2>Iniciar Sesión</h2>
+			<form method="POST" action="/login">
+				<input class="text" type="text" name="user" placeholder="Usuario" required>
+				<input class="text" type="password" name="pass" placeholder="Contraseña" required>
+				<input class="button" type="submit" value="Iniciar Sesión">
+			</form>
+			<script>
+				
+			</script>
+		</section>
+	</main>
+	<footer></footer>
+</body>
+</html>

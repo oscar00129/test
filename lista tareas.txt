@@ -1,0 +1,6 @@
+cosas que faltan:
+- fecha del mensaje.
+- guardar mensajes antiguos.
+
+posible que no lo haga:
+- comunicación uno a uno.
