@@ -1,5 +1,5 @@
 cosas que faltan:
-- fecha del mensaje.
+- fecha del mensaje. (Aparece abajo de la caja del mensaje)
 - guardar mensajes antiguos.
 
 posible que no lo haga:
