@@ -4,3 +4,5 @@ cosas que faltan:
 
 posible que no lo haga:
 - comunicación uno a uno.
+
+Este texto deberia aparecer en la ultima version del repositorio
